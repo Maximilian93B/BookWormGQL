@@ -8,7 +8,7 @@ import SavedBooks from './pages/SavedBooks'
 
 
 const client = new ApolloClient({
-  uri: '/graphql',
+  uri: 'http://localhost:3001/graphql', // Corrected to port 3001/graphql to change routing 
   cache: new InMemoryCache(),
 });
 
