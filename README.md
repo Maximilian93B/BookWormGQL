@@ -2,6 +2,7 @@
 
 ##
 ![BookWormGQL](./Assets/BookWormGQL.png)
+##
 
 ## Table of Contents
 - [Description](#description)
@@ -10,7 +11,9 @@
 - [Contact](#contact)
 - [License](#license)
 
+##
 ![BookWormGQL](./Assets/21-mern-homework-demo-01.gif)
+##
 
 ## Description
 BookWormGQL is a Search Engine Tool designed to allow users to search for books using GooglesBookAPI, Users can create personal Book lists and execute certain actions related to the their Books. Using Apollo Client and GraphQL to optimize network requests by reducing the bandwidth by allowing users to query exactly the data they need , which over all should improve the apps performance.
