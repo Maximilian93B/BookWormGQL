@@ -29,7 +29,7 @@ const SavedBooks = () => {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>An error occurred: {error.message}</div>;
 
-  // Ensure you have user data and saved books to work with
+
   const books = userData?.me?.savedBooks || [];
 
   const handleDeleteBook = async (bookId) => {
@@ -37,7 +37,7 @@ const SavedBooks = () => {
       await removeBook({
         variables: { bookId },
       });
-      removeBookId(bookId); // Assuming this updates local storage accordingly
+      removeBookId(bookId); //  updates local storage accordingly
     } catch (e) {
       console.error('Could not delete book', e);
     }
