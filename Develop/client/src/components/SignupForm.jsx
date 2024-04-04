@@ -1,16 +1,22 @@
 import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
-
+import { useMutation } from '@apollo/client';
+import { ADD_USER } from '../utils/mutations';
 import { createUser } from '../utils/API';
 import Auth from '../utils/auth';
 
 const SignupForm = () => {
-  // set initial form state
   const [userFormData, setUserFormData] = useState({ username: '', email: '', password: '' });
-  // set state for form validation
   const [validated] = useState(false);
-  // set state for alert
   const [showAlert, setShowAlert] = useState(false);
+
+  const [addUser, { error }] = useMutation(ADD_USER, {
+    onCompleted: (data) => {
+      const { token } = data.addUser;
+      Auth.login(token); // Implement this function as needed to handle login with token
+    }
+  });
+
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -19,34 +25,20 @@ const SignupForm = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-
-    // check if form has everything (as per react-bootstrap docs)
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    const { username, email, password } = userFormData;
 
     try {
-      const response = await createUser(userFormData);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token, user } = await response.json();
-      console.log(user);
-      Auth.login(token);
-    } catch (err) {
-      console.error(err);
+      await addUser({
+        variables: { username, email, password },
+      });
+    } catch (error) {
+      console.error('Signup Failed', error);
       setShowAlert(true);
     }
 
-    setUserFormData({
-      username: '',
-      email: '',
-      password: '',
-    });
+
+    setUserFormData({ username: '', email: '', password: ''});
+    // check if form has everything (as per react-bootstrap docs
   };
 
   return (
