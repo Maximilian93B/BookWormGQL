@@ -28,11 +28,11 @@ async function startApolloServer(typeDefs, resolvers) {
   // Apply middleware to the Express app
   server.applyMiddleware({ app, path: '/graphql' });
 
-  /*
+
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/build')));
   }
-  */
+
 
   db.once('open', () => {
     app.listen(PORT, () => 
