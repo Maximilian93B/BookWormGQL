@@ -6,12 +6,14 @@ import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API'; // Ensure this is the correct import
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
+
+
 const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [saveError, setSaveError] = useState('');
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
-  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+  const [saveBook, setSaveBook] = useMutation(SAVE_BOOK);
 
   useEffect(() => {
     return () => saveBookIds(savedBookIds);
@@ -51,18 +53,20 @@ const SearchBooks = () => {
       setSaveError('You must be logged in to save a book.');
       return;
     }
-
+  
     try {
-      await saveBook({
+      // Destructure data from the mutation result 
+      const { data } = await saveBook({
         variables: { bookData: { ...bookToSave } },
       });
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-      setSaveError(''); // Clear any errors upon successful save
+      setSavedBookIds((prevSavedBookIds) => [...prevSavedBookIds, bookToSave.bookId]);
+      setSaveError('');
     } catch (error) {
-      console.error('Error saving book', error);
-      setSaveError('Failed to save book. Please try again.');
+      console.error('Error saving book:', error);
+      setSaveError(`Failed to save book. Please try again. Error: ${error.message}`);
     }
   };
+  
 
   return (
     <>

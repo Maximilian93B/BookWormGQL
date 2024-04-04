@@ -2,6 +2,7 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express'); // Correct import for ApolloServer
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
+const { authMiddleware } = require('./utils/auth');
 
 async function startApolloServer(typeDefs, resolvers) {
   const PORT = process.env.PORT || 3001;
@@ -10,11 +11,14 @@ async function startApolloServer(typeDefs, resolvers) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req }) => {
-      const token = req.headers.authorization || '';
-      // Verify token and add user to context
+    context: async ({ req }) => {
+     // Use the authMiddleware to extract authen data 
+    const authData = authMiddleware({ req });
+    // Pass tje auth Data to resolvers
+    return{...authData };
     },
   });
+
 
   await server.start();
 

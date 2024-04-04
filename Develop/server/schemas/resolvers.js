@@ -4,31 +4,26 @@ const { signToken } = require('../utils/auth');
 
 const resolvers = {
   Query: {
-
     me: async (_, args, context) => {
       if (!context.user) {
         throw new AuthenticationError('Not logged in');
       }
 
       return await User.findById(context.user._id)
-        .select('-__v -password')
-        .populate('savedBooks');
+      .select('-__v -password')
+      .populate('savedBooks');
     },
   },
   Mutation: {
     login: async (_, { email, password }) => {
       const user = await User.findOne({ email });
-
-      if (!user) {
+      // Throw error if user or password does not exist or incorrect 
+      if (!user || !(await user.isCorrectPassword(password))) {
         throw new AuthenticationError('Incorrect credentials');
       }
-
-      const correctPw = await user.isCorrectPassword(password);
-
-      if (!correctPw) {
-        throw new AuthenticationError('Incorrect credentials');
-      }
-
+      
+      
+      
       const token = signToken(user);
 
       return { token, user };
