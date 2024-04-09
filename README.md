@@ -12,7 +12,9 @@
 - [License](#license)
 
 ##
+
 ![BookWormGQL](./Assets/21-mern-homework-demo-01.gif)
+
 ##
 
 ## Description
