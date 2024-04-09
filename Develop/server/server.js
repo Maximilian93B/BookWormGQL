@@ -1,13 +1,24 @@
+
+// Import all modules required
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express'); // Correct import for ApolloServer
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
 const { authMiddleware } = require('./utils/auth');
+const logger = require ('morgan') // Import morgan for HTTP request logging
 
+
+
+// Start Apollo Server
 async function startApolloServer(typeDefs, resolvers) {
+  //Define the PORT , use .env or default to 3001 
   const PORT = process.env.PORT || 3001;
   const app = express();
-  
+
+// Use Morgan for detailed request logging during dev phase 
+  app.use(logger('dev'));
+
+  // Apollo Instance , GraphQL --> typeDefs, resolvers from schemas 
   const server = new ApolloServer({
     typeDefs,
     resolvers,
@@ -19,7 +30,7 @@ async function startApolloServer(typeDefs, resolvers) {
     },
   });
 
-
+  // Start the server 
   await server.start();
 
   app.use(express.urlencoded({ extended: false }));
@@ -40,6 +51,7 @@ async function startApolloServer(typeDefs, resolvers) {
     );
   });
 }
+
 
 startApolloServer(typeDefs, resolvers);
 
