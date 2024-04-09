@@ -55,7 +55,7 @@ Personal Book Lists:
 - *Optimized Network Requests:* The use of GraphQL significantly reduces bandwidth usage by allowing users to request only the data they need, thereby enhancing the performance of the application.
 Responsive and Intuitive UI:
 
-*User-Friendly Design:* 
+**User-Friendly Design:** 
 
  - The application features a clean and intuitive interface, making it effortless for users to navigate through various features, from conducting book searches to managing their saved lists.
 
